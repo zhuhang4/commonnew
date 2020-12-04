@@ -22,7 +22,11 @@
       </div>
       <my-canvas class="diy"></my-canvas>
       <div class="price">
-        <sp-info :info="currentTargetInfo" @updateSpriteInfoFromSon="updateSpriteInfoFromSon"></sp-info>
+        <!-- <sp-info
+          :info="currentTargetInfo"
+          @updateSpriteInfoFromSon="updateSpriteInfoFromSon"
+        ></sp-info> -->
+        <tween v-show="tweenIn" :info="currentTargetInfo"></tween>
         <!-- <sp-info></sp-info> -->
 
         <div v-show="bool_singleBtIn" class="div_center">
@@ -43,6 +47,7 @@ import { Tool } from "@/YRUtils.js";
 
 import SpInfo from "./SpriteInfo.vue";
 import EditHomeContoller from "@/vuepages/EditHomeContoller.js";
+import Tween from "./Tween.vue";
 
 require("../lib/FileSaver.min.js");
 //格式如下
@@ -55,12 +60,13 @@ let saveInfo = [];
 export default {
   data() {
     return {
-      arr_pages: [],//{name:i,value:window.resource[i],targetName:key,target:this[key]}
+      arr_pages: [], //{name:i,value:window.resource[i],targetName:key,target:this[key]}
       currentInput: "",
       currentidx: -1,
       currenteditid: "",
       bool_singleBtIn: false,
-      currentTargetInfo:null,
+      tweenIn: false,
+      currentTargetInfo: null,
     };
   },
   created() {
@@ -75,17 +81,13 @@ export default {
         this.selectFirst();
       });
     });
+    //PIXI页面点击某个精灵后,更新spriteInfo.vue
     this.control.add("Vue_EditUpdateSingleBT", (e) => {
-      this.currentTargetInfo=Object.assign({},e.info);
-      console.log("this.currentTargetInfo:",this.currentTargetInfo);
-      // console.log(this.currentTargetInfo);
-      // this.currenteditid = e.id;
-      // this.bool_singleBtIn = true;
-      // if (saveInfo[this.currentidx][e.id] != "") {
-      //   this.currentInput = saveInfo[this.currentidx][e.id];
-      // } else {
-      //   this.currentInput = "";
-      // }
+      // this.currentTargetInfo = Object.assign({},e.info);
+      // this.targetChoosed = true;
+       this.tweenIn = true;
+      this.currentTargetInfo = Tool.deepCopy(e.info);
+      console.log("this.currentTargetInfo:", this.currentTargetInfo);
     });
   },
   watch: {
@@ -96,6 +98,7 @@ export default {
   components: {
     MyCanvas,
     SpInfo,
+    Tween,
   },
   methods: {
     changePage(item, idx) {
@@ -131,7 +134,7 @@ export default {
     selectFirst() {
       this.changePage(this.arr_pages[0], 0);
     },
-    updateSpriteInfoFromSon(data){
+    updateSpriteInfoFromSon(data) {
       this.control.inputAndUpdateSpriteInfo(data);
     },
     async exportJson(e) {

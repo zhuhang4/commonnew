@@ -1,4 +1,4 @@
-export class Cookie {
+ export class Cookie {
     static getCookie(name) {
         var strcookie = document.cookie;
         var arrcookie = strcookie.split("; ");
@@ -21,7 +21,6 @@ export class Cookie {
         //判断是否设置过期时间
         if (expireHours > 0) {
             var date = new Date();
-            console.log(date.getTime());
             date.setTime(date.getTime() + expireHours * 3600 * 1000);
             cookieString = cookieString + "; expires=" + date.toGMTString();
         }
@@ -86,7 +85,6 @@ export class Tool {
     static deepCopy(source) {
         const targetObj = source.constructor === Array ? [] : {}; // 判断复制的目标是数组还是对象
         for (let keys in source) { // 遍历目标
-            console.log(keys);
             if (source.hasOwnProperty(keys)) {
                 if (source[keys] && typeof source[keys] === 'object') { // 如果值是对象，就递归一下
                     targetObj[keys] = source[keys].constructor === Array ? [] : {};

@@ -17,7 +17,7 @@
       <p>高:</p>
       <input v-if="info" type="number" v-model="info.height" />
     </div>
-     <div class="title">中心点</div>
+    <div class="title">中心点</div>
     <div class="infoPiece">
       <p>x:（0.0-1.0）</p>
       <input v-if="info" type="number" v-model="info.pivot.x" />
@@ -67,7 +67,7 @@ export default {
   watch: {
     info: {
       handler(new_value, old_value) {
-        this.$emit('updateSpriteInfoFromSon', new_value)
+        this.$emit("updateSpriteInfoFromSon", new_value);
       },
       deep: true,
     },
@@ -90,6 +90,6 @@ export default {
 }
 .infoPiece {
   color: white;
-  font-size: 18px;
+  font-size: $normal_size;
 }
 </style>

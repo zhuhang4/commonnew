@@ -1,6 +1,7 @@
   import Vue from 'vue';
   import Vuex from 'vuex';
   import MyData from '@/MyData.js';
+  import {Tool} from '@/YRUtils.js';
   Vue.use(Vuex)
 
   const debug = process.env.NODE_ENV !== 'production'
@@ -22,6 +23,10 @@
       getSpriteInfo: (state) => (name) => {
         return state.resource[state.currentPageName][name];
       },
+      getResource:(state)=>
+      {
+        return state.resource
+      }
 
     },
     actions: {
@@ -44,9 +49,11 @@
       },
       updateSpriteInfo(state,data)
       {
-        console.log(data);
-        state.currentSprite=Object.assign(state.currentSprite,data);
-        console.log('mutations:更新精灵信息:',state.currentSprite);
+        let d=Tool.deepCopy(data);
+        // state.currentSprite=Object.assign(state.currentSprite,data);
+        state.currentSprite=d;
+        state.currentPage[state.currentSpriteName]=state.currentSprite
+        console.log('mutations:更新精灵信息:',state.currentPage);
       },
       changeVideoInfo(state, payload) {
         // console.log('mutations:changeVideoInfo', payload)
